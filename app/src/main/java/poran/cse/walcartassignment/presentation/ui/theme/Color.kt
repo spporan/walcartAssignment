@@ -1,4 +1,4 @@
-package poran.cse.walcartassignment.ui.theme
+package poran.cse.walcartassignment.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
