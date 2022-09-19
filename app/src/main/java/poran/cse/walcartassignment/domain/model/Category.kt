@@ -8,6 +8,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
+import poran.cse.walcartassignment.data.dto.Image
+import poran.cse.walcartassignment.data.dto.Parent
 
 @Keep
 @Parcelize

@@ -1,4 +1,4 @@
-package poran.cse.walcartassignment.domain.model
+package poran.cse.walcartassignment.data.dto
 
 
 import android.os.Parcelable
