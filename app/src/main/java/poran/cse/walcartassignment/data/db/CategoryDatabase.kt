@@ -20,8 +20,8 @@ abstract class CategoryDatabase: RoomDatabase() {
     abstract fun remoteKeyDao(): CategoryRemoteKeyDao
 
     companion object {
-        private const val DATABASE_NAME = "category-database"
-        private var database: CategoryDatabase? = null
+        const val DATABASE_NAME = "category-database"
+       /* private var database: CategoryDatabase? = null
 
         fun create(applicationContext: Application): CategoryDatabase {
             if (database == null) {
@@ -31,6 +31,6 @@ abstract class CategoryDatabase: RoomDatabase() {
                 ).build()
             }
             return database!!
-        }
+        }*/
     }
 }

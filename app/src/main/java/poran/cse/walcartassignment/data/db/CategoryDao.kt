@@ -21,6 +21,6 @@ interface CategoryDao {
     fun getCategory(uuid: String): Flow<Category>
 
     @Query("DELETE FROM categories")
-    suspend fun deleteAllCategories()
+    suspend fun deleteAllCategories(): Int
 
 }

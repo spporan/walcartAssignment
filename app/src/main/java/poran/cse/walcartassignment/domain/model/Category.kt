@@ -19,7 +19,7 @@ import poran.cse.walcartassignment.data.dto.Parent
 data class Category(
     @PrimaryKey @ColumnInfo(name = "id")
     @Json(name = "uid")
-    val uid: String?,
+    val uid: String,
     @Json(name = "attributeSetUid")
     val attributeSetUid: String?,
     @Json(name = "bnName")

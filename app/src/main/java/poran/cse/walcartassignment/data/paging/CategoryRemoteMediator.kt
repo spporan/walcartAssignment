@@ -1,5 +1,6 @@
 package poran.cse.walcartassignment.data.paging
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -51,11 +52,15 @@ class CategoryRemoteMediator(
             val response = try {
                 categoriesApi.getCategories(body = getQueryBody(page))
             } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("API", "error ${e.printStackTrace()}")
                 null
             }
+            Log.e("API", "response ${response?.isSuccessful} size ${response?.errorBody()} code ${response?.code()}")
             var endOfPaginationReached = false
             if (response?.isSuccessful == true) {
                 val responseData = response.body()
+
                 endOfPaginationReached = responseData?.data?.getCategories?.result?.categories?.size == 100
                 responseData?.data?.getCategories?.result?.categories?.let { categories ->
                     categoryDatabase.withTransaction {
@@ -69,14 +74,12 @@ class CategoryRemoteMediator(
 
 
                         val keys = categories.map { category ->
-                            category.uid?.let {
-                                CategoriesRemoteKey(
-                                    id = it,
-                                    prevPage = prevPage,
-                                    nextPage = nextPage,
-                                    lastUpdated = System.currentTimeMillis()
-                                )
-                            }
+                            CategoriesRemoteKey(
+                                id = category.uid,
+                                prevPage = prevPage,
+                                nextPage = nextPage,
+                                lastUpdated = System.currentTimeMillis()
+                            )
                         }
 
                         remoteKeyDao.addAllCategoryRemoteKeys(keys)
