@@ -8,7 +8,8 @@ import retrofit2.http.POST
 
 interface CategoriesApi {
 
+
     @Headers("Content-Type: application/json")
-    @POST("/")
+    @POST("graphql")
     suspend fun getCategories(@Body body: String): Response<CategoriesResponse>
 }

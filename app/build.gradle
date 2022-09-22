@@ -20,7 +20,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
-        buildConfigField("String",'BASE_URL', '"https://devapiv2.walcart.com/graphql/"')
+        buildConfigField("String",'BASE_URL', '"https://devapiv2.walcart.com/"')
 
     }
 

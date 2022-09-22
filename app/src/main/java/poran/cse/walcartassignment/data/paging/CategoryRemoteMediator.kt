@@ -7,6 +7,7 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import org.json.JSONObject
+import poran.cse.walcartassignment.Constants.getQueryBody
 import poran.cse.walcartassignment.data.api.CategoriesApi
 import poran.cse.walcartassignment.data.db.CategoryDatabase
 import poran.cse.walcartassignment.domain.model.CategoriesRemoteKey
@@ -53,10 +54,14 @@ class CategoryRemoteMediator(
                 categoriesApi.getCategories(body = getQueryBody(page))
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("API", "error ${e.printStackTrace()}")
+                Log.e("API", "body ${getQueryBody(page)}")
                 null
             }
-            Log.e("API", "response ${response?.isSuccessful} size ${response?.errorBody()} code ${response?.code()}")
+
+            Log.e("API", "body ${getQueryBody(page)}")
+
+
+            Log.e("API", "response ${response?.isSuccessful} size ${response?.message()} code ${response?.code()}")
             var endOfPaginationReached = false
             if (response?.isSuccessful == true) {
                 val responseData = response.body()
@@ -122,42 +127,5 @@ class CategoryRemoteMediator(
             }
     }
 
-    private fun getQueryBody(page: Int): String {
-        val paramObject = JSONObject()
-        paramObject.put("query", "query {\n" +
-                "  getCategories(pagination: { limit: $page, skip: 0 }) {\n" +
-                "    result {\n" +
-                "      categories {\n" +
-                "        uid\n" +
-                "        enName\n" +
-                "        bnName\n" +
-                "        parent {\n" +
-                "          uid\n" +
-                "          enName\n" +
-                "          bnName\n" +
-                "        }\n" +
-                "        parents {\n" +
-                "          uid\n" +
-                "          enName\n" +
-                "          bnName\n" +
-                "        }\n" +
-                "        image {\n" +
-                "          name\n" +
-                "          url\n" +
-                "          signedUrl\n" +
-                "        }\n" +
-                "        attributeSetUid\n" +
-                "        isActive\n" +
-                "        inActiveNote\n" +
-                "        createdAt\n" +
-                "        updatedAt\n" +
-                "      }\n" +
-                "    }\n" +
-                "  }\n" +
-                "\n" +
-                "}")
-        return paramObject.toString()
-
-    }
 
 }
