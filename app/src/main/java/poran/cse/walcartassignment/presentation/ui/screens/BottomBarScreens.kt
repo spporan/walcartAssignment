@@ -1,9 +1,7 @@
 package poran.cse.walcartassignment.presentation.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
@@ -43,14 +41,22 @@ fun HomeScreen() {
 fun CategoryScreen(categoryViewModel: CategoryViewModel = hiltViewModel()) {
    val allCategories = categoryViewModel.getCategories.collectAsLazyPagingItems()
 
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.background))
-            .wrapContentSize(Alignment.Center)
+            .fillMaxSize(),
+        horizontalArrangement = Arrangement.Start
     ) {
         
         CategorySidebar(categories = allCategories)
+        Text(
+            text = "Cart Screen",
+            fontWeight = FontWeight.Bold,
+            color = Color.Black,
+            textAlign = TextAlign.Center,
+            fontSize = 20.sp
+        )
     }
 }
 

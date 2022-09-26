@@ -57,14 +57,13 @@ class CategoryRemoteMediator(
                 categoriesApi.getCategories(body = getQueryBody(page * 10))
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("API", "body ${getQueryBody(page)}")
                 null
             }
 
-            Log.e("API", "body ${response?.body()?.data?.getCategories?.result?.categories?.size}")
+            Log.e("API", "body ${response?.body()}")
 
 
-            Log.e("API", "response ${response?.isSuccessful} size ${response?.message()} code ${response?.code()}")
+            Log.e("API", "response ${response?.isSuccessful} size ${response?.body()?.data?.getCategories?.result?.categories?.size} code ${response?.code()}")
             var endOfPaginationReached = false
             if (response?.isSuccessful == true) {
                 val responseData = response.body()
