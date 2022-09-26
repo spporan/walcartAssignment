@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import poran.cse.walcartassignment.R
+import poran.cse.walcartassignment.presentation.ui.components.CategorySidebar
 import poran.cse.walcartassignment.presentation.viewmodels.CategoryViewModel
 
 
@@ -48,14 +49,8 @@ fun CategoryScreen(categoryViewModel: CategoryViewModel = hiltViewModel()) {
             .background(colorResource(id = R.color.background))
             .wrapContentSize(Alignment.Center)
     ) {
-        Text(
-            text = "This is   Category Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        
+        CategorySidebar(categories = allCategories)
     }
 }
 

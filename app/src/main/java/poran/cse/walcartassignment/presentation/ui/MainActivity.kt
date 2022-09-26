@@ -15,23 +15,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import poran.cse.walcartassignment.presentation.ui.components.BottomBarNavigation
 import poran.cse.walcartassignment.presentation.ui.components.BottomNavItem
 import poran.cse.walcartassignment.presentation.ui.screens.*
 import poran.cse.walcartassignment.presentation.ui.theme.WalcartAssignmentTheme
+import poran.cse.walcartassignment.presentation.viewmodels.CategoryViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             WalcartAssignmentTheme {
                 // A surface container using the 'background' color from the theme

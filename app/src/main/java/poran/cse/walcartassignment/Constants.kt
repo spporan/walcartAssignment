@@ -1,50 +1,53 @@
 package poran.cse.walcartassignment
 
+import android.util.Log
 import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
 object Constants {
-    fun getQueryBody(page: Int): String {
+    fun getQueryBody(page: Int): RequestBody {
         val queryStr =  """
-            query{
-              getCategories(
-                pagination: { limit: 10, skip: 0 }
-
-                filter: { uid: \"C-C4PAEU\" }
-              ) {
-                result {
-                  categories {
-                    uid
-                    bnName
-                    enName
-                    parent {
-                      uid
-                      bnName
-                      enName
-                    }
-                    parents {
-                      uid
-                      bnName
-                      enName
-                    }
-                    image {
-                      name
-                      url
-                      signedUrl
-                    }
-                    attributeSetUid
-                    isActive
-                    inActiveNote
-                    createdAt
-                    updatedAt
-                  }
-                }
-              }
-            }
-        """.trimIndent()
+            {
+  getCategories(pagination: { limit: ${page}, skip: 0 }) {
+    result {
+      categories {
+        uid
+        enName
+        bnName
+        parent {
+          uid
+          enName
+          bnName
+        }
+        parents {
+          uid
+          enName
+          bnName
+        }
+        image {
+          name
+          url
+          signedUrl
+        }
+        attributeSetUid
+        isActive
+        inActiveNote
+        createdAt
+        updatedAt
+      }
+    }
+  }
+}""".trimIndent()
         val paramObject = JSONObject()
         paramObject.put("query", queryStr)
-        return paramObject.toString()
+        Log.e("API", "query body  ${paramObject}")
+        return createRequestBody(Pair<String,String>("query", queryStr))
 
     }
+    private fun createRequestBody(vararg params : Pair<String, Any>) =
+        JSONObject(mapOf(*params)).toString()
+            .toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
 }

@@ -22,6 +22,9 @@ class CategoryRemoteMediator(
     private val categoryDao = categoryDatabase.categoryDao()
     private val remoteKeyDao = categoryDatabase.remoteKeyDao()
 
+    override suspend fun initialize(): InitializeAction {
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
+    }
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Category>
@@ -51,14 +54,14 @@ class CategoryRemoteMediator(
             }
 
             val response = try {
-                categoriesApi.getCategories(body = getQueryBody(page))
+                categoriesApi.getCategories(body = getQueryBody(page * 10))
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e("API", "body ${getQueryBody(page)}")
                 null
             }
 
-            Log.e("API", "body ${getQueryBody(page)}")
+            Log.e("API", "body ${response?.body()?.data?.getCategories?.result?.categories?.size}")
 
 
             Log.e("API", "response ${response?.isSuccessful} size ${response?.message()} code ${response?.code()}")
@@ -66,7 +69,7 @@ class CategoryRemoteMediator(
             if (response?.isSuccessful == true) {
                 val responseData = response.body()
 
-                endOfPaginationReached = responseData?.data?.getCategories?.result?.categories?.size == 100
+                endOfPaginationReached = responseData?.data?.getCategories?.result?.categories?.size == 16
                 responseData?.data?.getCategories?.result?.categories?.let { categories ->
                     categoryDatabase.withTransaction {
                         if (loadType == LoadType.REFRESH) {
@@ -74,7 +77,7 @@ class CategoryRemoteMediator(
                             remoteKeyDao.deleteAllCategoryRemoteKeys()
                         }
 
-                        val prevPage = if (page == 10) null else page - 1
+                        val prevPage = if (page <= 1) null else page - 1
                         val nextPage = if (endOfPaginationReached) null else page + 1
 
 
