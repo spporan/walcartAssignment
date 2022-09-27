@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.Scaffold
+import androidx.compose.material.TopAppBar
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -55,6 +57,19 @@ class MainActivity : ComponentActivity() {
 fun MainScreenView(){
     val navController = rememberNavController()
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Browse Category",
+                        style = androidx.compose.material.MaterialTheme.typography.h5,
+                    )
+                },
+                backgroundColor = Color.White,
+                contentColor = Color.Black,
+                elevation = 0.dp
+            )
+        },
         bottomBar = {
             BottomBarNavigation(navController)
         }

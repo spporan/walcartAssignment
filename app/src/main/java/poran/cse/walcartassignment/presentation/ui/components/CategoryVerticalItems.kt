@@ -75,10 +75,10 @@ fun CategoryVerticalItem(category: Category, isSelected: Boolean = false, index:
 
 @Composable
 fun CategorySidebar(categories: LazyPagingItems<Category>) {
-    val scrollState = rememberScrollState()
     var selectedId by remember {
         mutableStateOf("C-C4PAEU")
     }
+
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
     ) {

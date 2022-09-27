@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import poran.cse.walcartassignment.R
+import poran.cse.walcartassignment.presentation.ui.components.CategoryMoreItems
 import poran.cse.walcartassignment.presentation.ui.components.CategorySidebar
 import poran.cse.walcartassignment.presentation.viewmodels.CategoryViewModel
 
@@ -48,15 +49,8 @@ fun CategoryScreen(categoryViewModel: CategoryViewModel = hiltViewModel()) {
             .fillMaxSize(),
         horizontalArrangement = Arrangement.Start
     ) {
-        
         CategorySidebar(categories = allCategories)
-        Text(
-            text = "Cart Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        CategoryMoreItems(allCategories)
     }
 }
 
