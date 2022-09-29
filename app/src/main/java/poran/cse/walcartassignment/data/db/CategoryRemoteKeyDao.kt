@@ -17,5 +17,5 @@ interface CategoryRemoteKeyDao {
     suspend fun addAllCategoryRemoteKeys(categoryRemoteKeys : List<CategoriesRemoteKey?>)
 
     @Query("DELETE FROM categories_remote_key")
-    suspend fun deleteAllCategoryRemoteKeys()
+    suspend fun deleteAllCategoryRemoteKeys(): Int
 }

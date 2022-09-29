@@ -21,16 +21,5 @@ abstract class CategoryDatabase: RoomDatabase() {
 
     companion object {
         const val DATABASE_NAME = "category-database"
-       /* private var database: CategoryDatabase? = null
-
-        fun create(applicationContext: Application): CategoryDatabase {
-            if (database == null) {
-                database = Room.databaseBuilder(
-                    applicationContext,
-                    CategoryDatabase::class.java, DATABASE_NAME
-                ).build()
-            }
-            return database!!
-        }*/
     }
 }
