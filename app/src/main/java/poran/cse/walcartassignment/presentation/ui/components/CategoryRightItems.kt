@@ -7,13 +7,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,7 +53,11 @@ fun CategoryMoreItems(categories: LazyPagingItems<Category>) {
         ) { index,  category ->
             if (category != null) {
                 CategoryExpandableItem(category = category,  selectedId == category.uid, index) {
-                    selectedId = category.uid
+                    selectedId = if (selectedId == category.uid) {
+                        "-1"
+                    } else {
+                        category.uid
+                    }
                 }
             }
         }
@@ -103,7 +103,7 @@ fun CategoryExpandableItem(category: Category, isExpanded: Boolean = false, inde
 
         }
 
-        if (isExpanded && category.parents?.isNotEmpty() != true) {
+        if (isExpanded && (category.parents?.size ?:  0) > 0) {
             // todo level 3 items
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 4.dp, vertical = 4.dp),
@@ -132,37 +132,39 @@ fun CategoryExpandableItem(category: Category, isExpanded: Boolean = false, inde
 fun HorizontalListItem(parent: Parent, cardColor: CardColorData = cardBgColors.random()) {
     Card(
         elevation = 0.dp,
-        backgroundColor = Color.White
+        backgroundColor = Color.Transparent,
+        modifier = Modifier.padding(start = 10.dp)
     ) {
         Column(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(
-                    vertical = 10.dp,
-                    horizontal = 5.dp
-                )
                 .wrapContentHeight(),
             horizontalAlignment  =  Alignment.CenterHorizontally
         ) {
 
             Card(
                 elevation = 4.dp,
-                backgroundColor = cardColor.backgroundColor
+                backgroundColor = cardColor.backgroundColor,
+                modifier = Modifier.size(height = 120.dp, width = 100.dp),
             ) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Image(
-                        painter = painterResource(id = poran.cse.walcartassignment.R.drawable.ic_dress),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(70.dp),
-                        // colorFilter = ColorFilter.tint( if (!isSelected) Color.Gray else Color(0xFF5486F8))
-                    )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+
                     Box(
                         modifier = Modifier
-                            .size(50.dp)
+                            .size(80.dp)
                             .clip(CircleShape)
                             .background(cardColor.surfaceColor)
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_dress),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(80.dp)
+                            .height(100.dp),
+                        // colorFilter = ColorFilter.tint( if (!isSelected) Color.Gray else Color(0xFF5486F8))
                     )
                 }
 

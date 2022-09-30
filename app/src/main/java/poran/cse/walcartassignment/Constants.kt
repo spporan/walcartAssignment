@@ -8,24 +8,28 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 
 object Constants {
-    fun getQueryBody(page: Int): RequestBody {
+    fun getFilterQueryBody(page: Int): RequestBody {
         val queryStr =  """
-            {
-  getCategories(pagination: { limit: ${page}, skip: 0 }) {
+           {
+  getCategories(
+    pagination: { limit: $page, skip: 0 }
+
+    filter: { uid: "C-C4PAEU" }
+  ) {
     result {
       categories {
         uid
-        enName
         bnName
+        enName
         parent {
           uid
-          enName
           bnName
+          enName
         }
         parents {
           uid
-          enName
           bnName
+          enName
         }
         image {
           name
@@ -47,6 +51,48 @@ object Constants {
         return createRequestBody(Pair<String,String>("query", queryStr))
 
     }
+
+    fun getQueryBody(page: Int): RequestBody {
+        val queryStr =  """
+           {
+             getCategories(pagination: { limit: $page, skip: 0 }) {
+               result {
+                 categories {
+                   uid
+                   enName
+                   bnName
+                   parent {
+                     uid
+                     enName
+                     bnName
+                   }
+                   parents {
+                     uid
+                     enName
+                     bnName
+                   }
+                   image {
+                     name
+                     url
+                     signedUrl
+                   }
+                   attributeSetUid
+                   isActive
+                   inActiveNote
+                   createdAt
+                   updatedAt
+                 }
+               }
+             }
+           }
+           """.trimIndent()
+        val paramObject = JSONObject()
+        paramObject.put("query", queryStr)
+        Log.e("API", "query body  ${paramObject}")
+        return createRequestBody(Pair<String,String>("query", queryStr))
+
+    }
+
     private fun createRequestBody(vararg params : Pair<String, Any>) =
         JSONObject(mapOf(*params)).toString()
             .toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())

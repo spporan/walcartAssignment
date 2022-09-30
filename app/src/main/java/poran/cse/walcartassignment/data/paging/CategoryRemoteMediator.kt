@@ -6,25 +6,29 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import dagger.Provides
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import poran.cse.walcartassignment.Constants.getQueryBody
 import poran.cse.walcartassignment.data.api.CategoriesApi
 import poran.cse.walcartassignment.data.db.CategoryDao
 import poran.cse.walcartassignment.data.db.CategoryDatabase
 import poran.cse.walcartassignment.data.db.CategoryRemoteKeyDao
+import poran.cse.walcartassignment.di.DatabaseModule
 import poran.cse.walcartassignment.domain.model.CategoriesRemoteKey
 import poran.cse.walcartassignment.domain.model.Category
+import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
 class CategoryRemoteMediator(
     private val categoriesApi: CategoriesApi,
-    //private val categoryDatabase: CategoryDatabase
     private val categoryDao: CategoryDao,
-    private val remoteKeyDao: CategoryRemoteKeyDao
+    private val remoteKeyDao: CategoryRemoteKeyDao,
 ): RemoteMediator<Int, Category>() {
-
-   /* private val categoryDao = categoryDatabase.categoryDao()
-    private val remoteKeyDao = categoryDatabase.remoteKeyDao()*/
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -66,22 +70,22 @@ class CategoryRemoteMediator(
 
             Log.e("API", "body ${response?.body()}")
 
-
             Log.e("API", "response ${response?.isSuccessful} size ${response?.body()?.data?.getCategories?.result?.categories?.size} code ${response?.code()}")
             var endOfPaginationReached = false
             if (response?.isSuccessful == true) {
                 val responseData = response.body()
 
-                endOfPaginationReached = responseData?.data?.getCategories?.result?.categories?.size == 16
+                endOfPaginationReached = responseData?.data?.getCategories?.result?.categories?.isEmpty() == true
+
                 responseData?.data?.getCategories?.result?.categories?.let { categories ->
-                        suspend {
+                    withContext(Dispatchers.IO) {
                         if (loadType == LoadType.REFRESH) {
                             categoryDao.deleteAllCategories()
                             remoteKeyDao.deleteAllCategoryRemoteKeys()
                         }
 
                         val prevPage = if (page <= 1) null else page - 1
-                        val nextPage = if (endOfPaginationReached) null else page + 1
+                        val nextPage = if (endOfPaginationReached || categories.size < page * 10) null else page + 1
 
 
                         val keys = categories.map { category ->
