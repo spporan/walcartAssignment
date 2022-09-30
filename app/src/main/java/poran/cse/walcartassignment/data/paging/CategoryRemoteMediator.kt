@@ -9,18 +9,22 @@ import androidx.room.withTransaction
 import org.json.JSONObject
 import poran.cse.walcartassignment.Constants.getQueryBody
 import poran.cse.walcartassignment.data.api.CategoriesApi
+import poran.cse.walcartassignment.data.db.CategoryDao
 import poran.cse.walcartassignment.data.db.CategoryDatabase
+import poran.cse.walcartassignment.data.db.CategoryRemoteKeyDao
 import poran.cse.walcartassignment.domain.model.CategoriesRemoteKey
 import poran.cse.walcartassignment.domain.model.Category
 
 @OptIn(ExperimentalPagingApi::class)
 class CategoryRemoteMediator(
     private val categoriesApi: CategoriesApi,
-    private val categoryDatabase: CategoryDatabase
+    //private val categoryDatabase: CategoryDatabase
+    private val categoryDao: CategoryDao,
+    private val remoteKeyDao: CategoryRemoteKeyDao
 ): RemoteMediator<Int, Category>() {
 
-    private val categoryDao = categoryDatabase.categoryDao()
-    private val remoteKeyDao = categoryDatabase.remoteKeyDao()
+   /* private val categoryDao = categoryDatabase.categoryDao()
+    private val remoteKeyDao = categoryDatabase.remoteKeyDao()*/
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -70,7 +74,7 @@ class CategoryRemoteMediator(
 
                 endOfPaginationReached = responseData?.data?.getCategories?.result?.categories?.size == 16
                 responseData?.data?.getCategories?.result?.categories?.let { categories ->
-                    categoryDatabase.withTransaction {
+                        suspend {
                         if (loadType == LoadType.REFRESH) {
                             categoryDao.deleteAllCategories()
                             remoteKeyDao.deleteAllCategoryRemoteKeys()

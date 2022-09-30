@@ -14,5 +14,5 @@ import poran.cse.walcartassignment.data.repository.dataSourceImpl.RemoteCategory
 object RemoteDataModule {
     @Provides
     fun provideRemoteDataSource(categoryApi: CategoriesApi, db: CategoryDatabase) : RemoteCategoryDataSource =
-        RemoteCategoryDataSourceImpl(categoryApi, categoryDatabase = db)
+        RemoteCategoryDataSourceImpl(categoryApi, categoryDao = db.categoryDao(), remoteKeyDao = db.remoteKeyDao())
 }

@@ -8,9 +8,6 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface CategoriesApi {
-
-
-
     @Headers(
         "Content-Type: application/json",
         "Accept: application/json",
