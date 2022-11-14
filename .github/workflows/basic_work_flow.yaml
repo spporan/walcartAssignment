@@ -33,14 +33,6 @@ jobs:
         if: always()
         run: ./gradlew assembleDebug
 
-      - name: Upload APK file
-          if: always()
-          uses: actions/upload-artifact@v2
-          with:
-            name: debug-build.apk
-            path: |
-              app/build/outputs/apk/debug/app-debug.apk
-
       - name: Upload AAR files
         if: always()
         uses: actions/upload-artifact@v2
@@ -48,4 +40,3 @@ jobs:
           name: artifacts.zip
           path: |
             app/build/outputs/apk/debug/app-debug.apk
-            dog_network/build/outputs/aar
